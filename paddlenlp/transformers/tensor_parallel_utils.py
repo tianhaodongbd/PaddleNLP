@@ -270,7 +270,7 @@ class FusedHeadAndCrossEntropy(PyLayer):
                     grad_lm_head_bias += grad_logits_chunk.astype("float32").sum(axis=0).astype(dtype)
 
         token_loss = paddle.concat(token_loss_list, axis=0)
-        if hidden_states.stop_gradient:
+        if not return_token_loss and hidden_states.stop_gradient:
             grad_hidden_states = paddle.concat(grad_hidden_states_list, axis=0)
         return token_loss, grad_lm_head_weight, grad_lm_head_bias, grad_hidden_states
 
